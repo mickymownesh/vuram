@@ -33,6 +33,8 @@ class Account extends Thread{
     
     }
     
+    //overrideing the run method 
+    
     @Override
     public void run(){
         int n;
