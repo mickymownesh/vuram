@@ -8,6 +8,7 @@ package vuram_problems;
 
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,15 +20,29 @@ import java.util.logging.Logger;
 
 public class P4 {
 
-    public static void main(String[] args) throws FileNotFoundException{
+    public static void main(String[] args) throws FileNotFoundException, IOException{
         
         String empName,DOB,DOJ,salary,experience;       
         int c,sno = 0;
         Scanner in = new Scanner(System.in);
-        File db = new File("EmployeeFile.txt");
-        FileOutputStream db_out = new FileOutputStream(db);
-        FileInputStream db_in = new FileInputStream(db);
-              
+        FileInputStream Read = null;
+        FileOutputStream Write = null;
+        
+       
+        
+        try{
+            
+            Read = new FileInputStream("employee.txt");
+            Write = new FileOutputStream(Read.getFD());
+            
+            
+        }catch(IOException e){
+            File f = new File("employee.txt");
+            Read = new FileInputStream(f.getName());
+            Write = new FileOutputStream(f);
+            System.out.println("Exception in opening the file");
+        }
+        
         System.out.println("1. Add data \n2. Retrive data");
         c = in.nextInt();
         switch(c){
@@ -35,7 +50,6 @@ public class P4 {
             {
                 //input data in same line with , as a seperator
                 System.out.println("Enter the name,dob,doj,salary,experience");
-                in.nextLine();
                 String st = in.nextLine();
                 StringTokenizer input = new StringTokenizer(st,",");
                 st = "sno : "+sno+" Name : "+input.nextToken()+" dob : "+input.nextToken()+" Doj : "+input.nextToken()
@@ -45,18 +59,22 @@ public class P4 {
                 byte[] bt;
                 bt = st.getBytes();
                 System.out.println(bt);
+            
             try {
-                db_out.write(bt);
+                Write.write(bt);
             } 
             catch (IOException ex) {
-               
+               System.out.println(ex);
             }
+            
             }
             
             case 2:
             {
             try {
-                System.out.println(db_in.read());
+                
+                System.out.println(Read.read());
+                
             } catch (IOException ex) {
                 System.out.println("No data found");
             }
